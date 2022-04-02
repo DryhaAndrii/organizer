@@ -1,0 +1,38 @@
+.message
+    position: fixed
+
+    width: 300px
+    height: 200px
+    display: flex
+    flex-direction: column
+    justify-content: space-around
+    align-items: center
+    background-color: #000000
+    border-radius: 20px
+    padding: 20px
+    transition: all 400ms ease
+    p
+        color: white
+        margin: 0px
+    button
+        display: flex
+        justify-content: center
+        align-items: center
+        background-color: #ffffffbf
+        border-style: none
+        border-radius: 10px
+        height: 50px
+        width: 50px
+        font-size: 15px
+        transition: all 400ms ease
+        &:hover
+            background: rgb(80, 80, 80)
+            color: #f5f5f5
+            cursor: pointer
+        &:active
+            transform: scale(.80)
+.hide
+    transform: scale(.0)
+
+
+
