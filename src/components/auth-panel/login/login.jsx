@@ -5,7 +5,7 @@ function Login(props) {
   function login() {
     if (userInfo.login !== "" && userInfo.password !== "") {
       console.log("posted");
-      fetch("http://localhost:4000/login", {
+      fetch("/api/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json;charset=utf-8",

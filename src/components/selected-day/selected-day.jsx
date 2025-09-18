@@ -11,7 +11,7 @@ function SelectedDay(props) {
     async function getDay(day, month, year, userLogin) {
         const body = { day, month, year, userLogin: userLogin };
         console.log('posted:', body);
-        fetch('http://localhost:4000/get-day', {
+        fetch('/api/get-day', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
@@ -27,7 +27,7 @@ function SelectedDay(props) {
         } else {
             const body = { day, month, year, business: business, login: login };
             console.log('posted:', body);
-            fetch('http://localhost:4000/addToList', {
+            fetch('/api/addToList', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json;charset=utf-8'
@@ -41,7 +41,7 @@ function SelectedDay(props) {
     async function removeFromList(day, month, year, index, login) {
         const body = { day, month, year, index, login };
         console.log('posted:', body);
-        fetch('http://localhost:4000/removeFromList', {
+        fetch('/api/removeFromList', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'

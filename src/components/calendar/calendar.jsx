@@ -19,7 +19,7 @@ function Calendar(props) {
   async function getDays(year, month, login) {
     const body = { year, month, login: login };
     console.log("posted:", body);
-    fetch("http://localhost:4000/get-days", {
+    fetch("/api/get-days", {
       method: "POST",
       headers: {
         "Content-Type": "application/json;charset=utf-8",

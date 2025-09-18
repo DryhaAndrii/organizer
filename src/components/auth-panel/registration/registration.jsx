@@ -6,7 +6,7 @@ function Registration(props) {
         if (userInfo.login !== "" && userInfo.password !== "" && userInfo.confirmPassword !== "") {
             if (userInfo.password === userInfo.confirmPassword) {
                 console.log('posted');
-                fetch('http://localhost:4000/register', {
+                fetch('/api/register', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json;charset=utf-8'
