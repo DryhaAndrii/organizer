@@ -1,70 +1,72 @@
-# Getting Started with Create React App
+# Organizer (frontend + backend + Postgres)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A simple calendar/TODO app: React frontend, Node/Express backend, and Postgres for users and tasks. Ships with a Docker setup and Nginx reverse proxy for the API.
 
-## Available Scripts
+## Quick start (Docker)
 
-In the project directory, you can run:
+Prerequisite: Docker Desktop installed.
 
-### `npm start`
+1) Build and start containers:
+```
+docker compose up -d --build
+```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+2) Open the frontend:
+```
+http://localhost:3000
+```
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Services and ports:
+- frontend (Nginx) — 3000/tcp, serves the React build and proxies the API
+- backend (Node/Express) — 4000/tcp
+- db (Postgres 15) — 5432/tcp
 
-### `npm test`
+Default DB access:
+- host: localhost
+- port: 5432
+- user: app
+- password: app
+- database: organizer
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Database schema is initialized automatically from `back/db/init.sql`.
 
-### `npm run build`
+## Local development without Docker (optional)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Run Postgres separately (e.g., via Docker) or install locally, then:
+```
+npm i
+npm run backend-start  # starts Express on 4000
+npm start              # CRA dev server on 3000
+```
+The frontend proxies `/api/*` to the backend via the `proxy` field in `package.json`.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Architecture
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- Frontend: CRA (React 17), served by Nginx. All API requests go to `/api/*` and are proxied to `backend:4000` inside the Docker network.
+- Backend: Node/Express with routes: `/login`, `/register`, `/get-days`, `/get-day`, `/addToList`, `/removeFromList`.
+- DB: Postgres. Tables: `users` (bcrypt password hash), `todos` (per user and date).
 
-### `npm run eject`
+## Environment variables (backend)
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Set in `docker-compose.yml`:
+- `PGHOST=db`
+- `PGPORT=5432`
+- `PGUSER=app`
+- `PGPASSWORD=app`
+- `PGDATABASE=organizer`
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+You can override these for local development via env vars.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Troubleshooting
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+- Port 3000 in use: close the process or accept another port when CRA prompts. In Docker, the frontend is always on 3000.
+- First-time registration: create a user via the registration form — the password is hashed (`bcrypt`).
+- Clean rebuild Docker:
+```
+docker compose down
+docker compose up -d --build
+```
 
-## Learn More
+## License
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+MIT
