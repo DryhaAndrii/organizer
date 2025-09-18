@@ -14,11 +14,6 @@ app.use((req, res, next) => {
     next();
 });
 
-/*fs.access('back/file.json', fs.F_OK, (err) => {
-    if (err) {
-        createFileJSON();
-    }
-})*/
 
 app.get("/about", function (request, response) {
     console.log('about-get');
@@ -144,33 +139,6 @@ app.post("/removeFromList", urlencodedParser, function (request, response) {
         response.send({ text: 'list removed' });
     });
 });
-/*
-fs.readFile('back/file.json', 'utf8', function (err, data) {
-    if (err) throw err;
-    console.log('Readed:',JSON.parse(data).text);
-  });
-  */
-/*
-let objToWrite = {
-    text: 'textik'
-}
-
-
-fs.writeFile("back/file.json", JSON.stringify(objToWrite), (err) => {
-    if (err) {
-        console.log(err);
-    }
-    else {
-        console.log('File saved');
-    }
-})
-*/
-
-/*
- fs.readFile('back/file.json', 'utf8', function (err, data) {
-   if (err) throw err;
-   console.log('Readed:',JSON.parse(data).text);
- });*/
 
 app.listen(4000);
 
