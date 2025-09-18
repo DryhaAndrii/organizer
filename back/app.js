@@ -2,12 +2,31 @@ const express = require("express");
 const fs = require("fs");
 const bcrypt = require("bcrypt");
 const db = require("./db");
+const session = require('express-session');
+const PgStore = require('connect-pg-simple')(session);
 
 const app = express();
 
 const urlencodedParser = express.urlencoded({ extended: false });
 
 app.use(require("body-parser").json());
+app.set('trust proxy', 1);
+app.use(session({
+    store: new PgStore({
+        pool: db.pool,
+        tableName: 'session'
+    }),
+    secret: process.env.SESSION_SECRET || 'dev_secret_change_me',
+    resave: false,
+    saveUninitialized: false,
+    rolling: true,
+    cookie: {
+        httpOnly: true,
+        sameSite: 'lax',
+        secure: false,
+        maxAge: 30 * 60 * 1000
+    }
+}));
 app.use((req, res, next) => {
 
     res.header('Access-Control-Allow-Origin', '*');
@@ -76,11 +95,38 @@ app.post("/login", urlencodedParser, async function (request, response) {
         const user = await getUserByLogin(login);
         if (!user) return response.send({ text: `There are no user with login: ${login}` });
         const ok = await bcrypt.compare(password, user.password_hash);
-        if (ok) return response.send({ text: 'success' });
+        if (ok) {
+            request.session.userId = user.id;
+            request.session.login = user.login;
+            return response.send({ text: 'success' });
+        }
         return response.send({ text: 'wrong password' });
     } catch (e) {
         console.error(e);
         response.status(500).send({ error: 'Internal error' });
+    }
+});
+
+app.get('/me', async function (request, response) {
+    try {
+        if (request.session && request.session.userId) {
+            return response.send({ login: request.session.login });
+        }
+        return response.status(401).send({});
+    } catch (e) {
+        console.error(e);
+        response.status(500).send({});
+    }
+});
+
+app.post('/logout', async function (request, response) {
+    try {
+        request.session?.destroy(() => {
+            response.status(204).send();
+        });
+    } catch (e) {
+        console.error(e);
+        response.status(500).send({});
     }
 });
 

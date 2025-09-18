@@ -55,7 +55,10 @@ function SelectedDay(props) {
         <div className='selected-day-panel'>
             <div className='panel-header'>
                 <p>Your login: {props.userLogin}</p>
-                <button onClick={() => { props.setIsAuthicated(false); props.setUserLogin('') }}>Log out</button>
+                <button onClick={() => {
+                    fetch('/api/logout', { method: 'POST' })
+                      .finally(() => { props.setIsAuthicated(false); props.setUserLogin('') })
+                }}>Log out</button>
             </div>
             {selectedDay.day !== '' && selectedDay.month !== '' && selectedDay.year !== '' ?
                 <div className='selected-day-info'>
