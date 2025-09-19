@@ -18,9 +18,15 @@ function Login(props) {
           if (res.text === "success") {
             props.auth(userInfo.login);
           }
+        })
+        .catch(() => {
+          props.setShowMessage({
+            text: "Server is not available. Try later.",
+            show: true,
+          });
         });
     } else {
-      props.setShowMessage({ text: "Not all inputs are filled", show: true });
+      props.setShowMessage({ text: "All inputs are required", show: true });
     }
   }
   return (

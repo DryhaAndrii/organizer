@@ -11,7 +11,7 @@ import "./App.sass";
 function App() {
   const { currentDate, setCurrentDate, nextMonth, prevMonth } =
     useCalendarDate();
-  const { isAuthenticated, setIsAuthenticated, userLogin, setUserLogin, auth } =
+  const { isAuthenticated, setIsAuthenticated, userLogin, setUserLogin, auth, isCheckingAuth, serverUnavailable, checkAuth } =
     useAuth();
   const { showMessage, setShowMessage } = useMessage();
   const [selectedDay, setSelectedDay] = useState({
@@ -21,6 +21,26 @@ function App() {
     toDoList: [],
   });
   const [rerenderCalendar, setRerenderCalendar] = useState(false);
+
+  if (isCheckingAuth) {
+    return (
+      <div className="app">
+        <div style={{ color: '#fff' }}>Loading...</div>
+      </div>
+    );
+  }
+
+  if (serverUnavailable) {
+    return (
+      <div className="app">
+        <div style={{ color: '#fff', textAlign: 'center', maxWidth: 420 }}>
+          <h2>Service is not available</h2>
+          <p>Unable to connect to the server. Check the internet or try again later.</p>
+          <button onClick={checkAuth}>Try again</button>
+        </div>
+      </div>
+    );
+  }
 
   if (isAuthenticated && userLogin !== "")
     return (
