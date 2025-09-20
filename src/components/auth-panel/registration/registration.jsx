@@ -42,7 +42,6 @@ function Registration(props) {
         Register
        </Button>
        <Button
-         variant="ghost"
         onClick={() => {
           props.setIsLoginPage(true);
         }}

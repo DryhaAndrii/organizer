@@ -35,7 +35,6 @@ function Login(props) {
         Log in
       </Button>
       <Button
-        variant="ghost"
         onClick={() => {
           props.setIsLoginPage(false);
         }}

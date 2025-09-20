@@ -13,13 +13,13 @@ function CalendarHeader({ currentDate, prevMonth, nextMonth }) {
         <Button onClick={() => nextMonth(currentDate)}>🡆</Button>
       </div>
       <div className="days-names">
-        <p>Pn</p>
-        <p>Vt</p>
-        <p>Sr</p>
-        <p>Ch</p>
-        <p>Ptn</p>
-        <p>Sub</p>
-        <p>Voskr</p>
+        <p>Mon</p>
+        <p>Tue</p>
+        <p>Wed</p>
+        <p>Thu</p>
+        <p>Fri</p>
+        <p>Sat</p>
+        <p>Sun</p>
       </div>
     </div>
   );

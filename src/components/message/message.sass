@@ -1,38 +1,33 @@
 .message
     position: fixed
-
-    width: 300px
-    height: 200px
+    left: 50%
+    top: 50%
+    transform: translate(-50%, -50%)
+    width: 360px
+    min-height: 200px
     display: flex
     flex-direction: column
-    justify-content: space-around
+    gap: 16px
+    justify-content: center
     align-items: center
-    background-color: #000000
-    border-radius: 20px
-    padding: 20px
-    transition: all 400ms ease
+    background: linear-gradient(135deg, #0f1426 0%, #1b2442 100%)
+    border: 1px solid #2a334a
+    border-radius: 16px
+    padding: 24px
+    box-shadow: 0 30px 60px rgba(0,0,0,0.35)
+    transition: transform 300ms ease, opacity 300ms ease
     p
-        color: white
+        color: var(--text)
         margin: 0px
+        text-align: center
+        line-height: 1.4
     button
-        display: flex
-        justify-content: center
-        align-items: center
-        background-color: #ffffffbf
-        border-style: none
-        border-radius: 10px
-        height: 50px
-        width: 50px
-        font-size: 15px
-        transition: all 400ms ease
-        &:hover
-            background: rgb(80, 80, 80)
-            color: #f5f5f5
-            cursor: pointer
-        &:active
-            transform: scale(.80)
+        height: 44px
+        min-width: 96px
+        font-size: 14px
 .hide
-    transform: scale(.0)
+    opacity: 0
+    transform: translate(-50%, calc(-50% + 10px))
 
 
 

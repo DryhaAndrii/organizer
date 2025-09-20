@@ -2,6 +2,7 @@ import React from "react";
 import Calendar from "../calendar/calendar.jsx";
 import SelectedDay from "../selected-day/selected-day.jsx";
 import Message from "../message/message.jsx";
+import ThemeToggle from "../ui/ThemeToggle.jsx";
 
 function AuthenticatedView({
   rerenderCalendar,
@@ -20,6 +21,7 @@ function AuthenticatedView({
 }) {
   return (
     <div className="app">
+      <ThemeToggle />
       <Calendar
         rerenderCalendar={rerenderCalendar}
         setRerenderCalendar={setRerenderCalendar}
