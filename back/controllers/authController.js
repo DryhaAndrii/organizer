@@ -1,4 +1,9 @@
-const { authenticateUser, registerUser, getMeFromSession, destroySession } = require('../services/authService');
+const {
+  authenticateUser,
+  registerUser,
+  getMeFromSession,
+  destroySession,
+} = require("../services/authService");
 
 async function me(req, res) {
   try {
@@ -22,7 +27,7 @@ async function login(req, res) {
     return res.send({ text: auth.message });
   } catch (e) {
     console.error(e);
-    res.status(500).send({ error: 'Internal error' });
+    res.status(500).send({ error: "Internal error" });
   }
 }
 
@@ -34,7 +39,7 @@ async function register(req, res) {
     return res.send({ text: result.message });
   } catch (e) {
     console.error(e);
-    res.status(500).send({ error: 'Internal error' });
+    res.status(500).send({ error: "Internal error" });
   }
 }
 
@@ -54,5 +59,3 @@ module.exports = {
   register,
   logout,
 };
-
-

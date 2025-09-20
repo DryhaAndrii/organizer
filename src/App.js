@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import Calendar from "./components/calendar/calendar.jsx";
-import SelectedDay from "./components/selected-day/selected-day.jsx";
-import AuthPanel from "./components/auth-panel/auth-panel.jsx";
-import Message from "./components/message/message.jsx";
+import LoadingView from "./components/views/LoadingView.jsx";
+import ServerUnavailable from "./components/views/ServerUnavailable.jsx";
+import AuthenticatedView from "./components/views/AuthenticatedView.jsx";
+import UnauthenticatedView from "./components/views/UnauthenticatedView.jsx";
 import { useCalendarDate } from "./hooks/useCalendarDate";
 import { useAuth } from "./hooks/useAuth";
 import { useMessage } from "./hooks/useMessage";
@@ -23,60 +23,37 @@ function App() {
   const [rerenderCalendar, setRerenderCalendar] = useState(false);
 
   if (isCheckingAuth) {
-    return (
-      <div className="app">
-        <div style={{ color: '#fff' }}>Loading...</div>
-      </div>
-    );
+    return <LoadingView />;
   }
 
   if (serverUnavailable) {
-    return (
-      <div className="app">
-        <div style={{ color: '#fff', textAlign: 'center', maxWidth: 420 }}>
-          <h2>Service is not available</h2>
-          <p>Unable to connect to the server. Check the internet or try again later.</p>
-          <button onClick={checkAuth}>Try again</button>
-        </div>
-      </div>
-    );
+    return <ServerUnavailable onRetry={checkAuth} />;
   }
 
   if (isAuthenticated && userLogin !== "")
     return (
-      <div className="app">
-        <Calendar
-          rerenderCalendar={rerenderCalendar}
-          setRerenderCalendar={setRerenderCalendar}
-          currentDate={currentDate}
-          setCurrentDate={setCurrentDate}
-          nextMonth={nextMonth}
-          prevMonth={prevMonth}
-          userLogin={userLogin}
-          selectedDay={selectedDay}
-          setSelectedDay={setSelectedDay}
-        />
-        <SelectedDay
-          setRerenderCalendar={setRerenderCalendar}
-          userLogin={userLogin}
-          setIsAuthicated={setIsAuthenticated}
-          setUserLogin={setUserLogin}
-          selectedDay={selectedDay}
-          setShowMessage={setShowMessage}
-        />
-
-        {showMessage.show && (
-          <Message setShowMessage={setShowMessage} showMessage={showMessage} />
-        )}
-      </div>
+      <AuthenticatedView
+        rerenderCalendar={rerenderCalendar}
+        setRerenderCalendar={setRerenderCalendar}
+        currentDate={currentDate}
+        setCurrentDate={setCurrentDate}
+        nextMonth={nextMonth}
+        prevMonth={prevMonth}
+        userLogin={userLogin}
+        selectedDay={selectedDay}
+        setSelectedDay={setSelectedDay}
+        setIsAuthenticated={setIsAuthenticated}
+        setUserLogin={setUserLogin}
+        showMessage={showMessage}
+        setShowMessage={setShowMessage}
+      />
     );
   return (
-    <div className="app">
-      <AuthPanel setShowMessage={setShowMessage} auth={auth} />
-      {showMessage.show && (
-        <Message setShowMessage={setShowMessage} showMessage={showMessage} />
-      )}
-    </div>
+    <UnauthenticatedView
+      auth={auth}
+      showMessage={showMessage}
+      setShowMessage={setShowMessage}
+    />
   );
 }
 

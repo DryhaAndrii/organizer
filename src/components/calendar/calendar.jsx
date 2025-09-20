@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Day from "./day/day.jsx";
 import "./calendar.sass";
+import CalendarHeader from "./CalendarHeader.jsx";
 function Calendar(props) {
   const [days, setDays] = useState([]);
 
@@ -32,38 +33,7 @@ function Calendar(props) {
 
   return (
     <div className="calendar">
-      <div className="calendar-header">
-        <div className="top">
-          <button
-            onClick={() => {
-              props.prevMonth(props.currentDate);
-            }}
-          >
-            🡄
-          </button>
-          <div className="date">
-            <p>{props.currentDate.year}</p>
-            <p>{props.currentDate.month}</p>
-          </div>
-
-          <button
-            onClick={() => {
-              props.nextMonth(props.currentDate);
-            }}
-          >
-            🡆
-          </button>
-        </div>
-        <div className="days-names">
-          <p>Pn</p>
-          <p>Vt</p>
-          <p>Sr</p>
-          <p>Ch</p>
-          <p>Ptn</p>
-          <p>Sub</p>
-          <p>Voskr</p>
-        </div>
-      </div>
+      <CalendarHeader currentDate={props.currentDate} prevMonth={props.prevMonth} nextMonth={props.nextMonth} />
       <div className="days">
         {days.map((item) => (
           <Day

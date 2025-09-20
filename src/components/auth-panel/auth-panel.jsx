@@ -5,20 +5,23 @@ import Registration from "./registration/registration";
 function AuthPanel(props) {
   const [isLoginPage, setIsLoginPage] = useState(true);
 
-  return (
-    <div className="auth-panel">
-      {isLoginPage ? (
+  if (isLoginPage)
+    return (
+      <div className="auth-panel">
         <Login
           setIsLoginPage={setIsLoginPage}
           setShowMessage={props.setShowMessage}
           auth={props.auth}
         />
-      ) : (
-        <Registration
-          setIsLoginPage={setIsLoginPage}
-          setShowMessage={props.setShowMessage}
-        />
-      )}
+      </div>
+    );
+
+  return (
+    <div className="auth-panel">
+      <Registration
+        setIsLoginPage={setIsLoginPage}
+        setShowMessage={props.setShowMessage}
+      />
     </div>
   );
 }

@@ -1,38 +1,17 @@
-import React, { useState } from "react";
+import React from "react";
+import { useLogin } from "./useLogin";
+import Button from "../../ui/Button.jsx";
+import Input from "../../ui/Input.jsx";
 
 function Login(props) {
-  const [userInfo, setUserInfo] = useState({ login: "", password: "" });
-  function login() {
-    if (userInfo.login !== "" && userInfo.password !== "") {
-      console.log("posted");
-      fetch("/api/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json;charset=utf-8",
-        },
-        body: JSON.stringify(userInfo),
-      })
-        .then((response) => response.json())
-        .then((res) => {
-          props.setShowMessage({ text: res.text, show: true });
-          if (res.text === "success") {
-            props.auth(userInfo.login);
-          }
-        })
-        .catch(() => {
-          props.setShowMessage({
-            text: "Server is not available. Try later.",
-            show: true,
-          });
-        });
-    } else {
-      props.setShowMessage({ text: "All inputs are required", show: true });
-    }
-  }
+  const { userInfo, setUserInfo, login } = useLogin({
+    auth: props.auth,
+    setShowMessage: props.setShowMessage,
+  });
   return (
     <div className="login panel">
       <h1>Login</h1>
-      <input
+      <Input
         type="text"
         value={userInfo.login}
         onChange={(e) => {
@@ -40,7 +19,7 @@ function Login(props) {
         }}
         placeholder="Your login"
       />
-      <input
+      <Input
         type="text"
         value={userInfo.password}
         onChange={(e) => {
@@ -48,20 +27,21 @@ function Login(props) {
         }}
         placeholder="Your password"
       />
-      <button
+      <Button
         onClick={() => {
           login();
         }}
       >
         Log in
-      </button>
-      <button
+      </Button>
+      <Button
+        variant="ghost"
         onClick={() => {
           props.setIsLoginPage(false);
         }}
       >
         Registration
-      </button>
+      </Button>
     </div>
   );
 }
